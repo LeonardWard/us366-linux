@@ -79,6 +79,21 @@ echo "0644 8041" > /sys/bus/usb/drivers/snd-usb-audio/new_id
 
 - Ubuntu (커널 6.17.0), US-366 펌웨어 bcdDevice 2.00
 
+## 기기 ID가 다를 경우
+
+USB VID/PID는 기기 펌웨어에 새겨진 값이라 시스템마다 달라지지 않는다(`0644`는
+TEAC의 USB-IF 벤더 ID). 시스템마다 달라지는 것은 버스/포트/장치 번호뿐이라,
+스크립트는 경로가 아니라 VID/PID로 기기를 찾는다.
+
+다만 하드웨어 리비전에 따라 다른 PID를 쓰는 경우가 이론적으로 있으므로, 인식이
+안 되면 먼저 아래로 확인해 볼 것:
+
+```bash
+lsusb | grep -i tascam    # US-366이 0644:xxxx로 표시됨
+```
+
+다른 ID가 나오면 스크립트 상단의 `VID`/`PID` 값을 그 ID로 바꿔 실행하면 된다.
+
 ## 기타
 
 - TASCAM US-144MKII는 별개다. 전용 드라이버(`us144mkii`)가 Linux 커널
